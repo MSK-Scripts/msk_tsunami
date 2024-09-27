@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding = "UTF-8"?>
+<WaterData>
+  <WaterQuads>
+    <Item>
+      <minX value="-12000" /> <!-- north edge of water -->
+      <maxX value="12000" /> <!-- east edge of water -->
+      <minY value="-12000" /> <!-- south edge of water -->
+      <maxY value="12000" /> <!-- west edge of water -->
+      <Type value="0" />
+      <IsInvisible value="false" />
+      <HasLimitedDepth value="false" />
+      <z value="0.0" /> <!-- heigth level of the water surface -->
+      <a1 value="26" /> <!-- define how clear the surface of the water is // 0 = pool (light blue color, can see the bottom of the water) // 80 = swamp (dark blue color, can't see the bottom of the water) -->
+      <a2 value="26" /> <!-- define how clear the surface of the water is // 0 = pool (light blue color, can see the bottom of the water) // 80 = swamp (dark blue color, can't see the bottom of the water) -->
+      <a3 value="26" /> <!-- define how clear the surface of the water is // 0 = pool (light blue color, can see the bottom of the water) // 80 = swamp (dark blue color, can't see the bottom of the water) -->
+      <a4 value="26" /> <!-- define how clear the surface of the water is // 0 = pool (light blue color, can see the bottom of the water) // 80 = swamp (dark blue color, can't see the bottom of the water) -->
+      <NoStencil value="false" /> <!-- Default: <NoStencil value="false" /> -->
+    </Item>
+  </WaterQuads>
+  <WaveQuads>
+    <Item>
+      <minX value="-12000" />
+      <maxX value="12000" />
+      <minY value="-12000" />
+      <maxY value="12000" />
+      <Amplitude value="0" /> <!-- height level of the wave -->
+      <XDirection value="0.9" />
+      <YDirection value="-0.2" />
+    </Item>
+    <CalmingQuads>
+      <Item>
+        <minX value="-12000" />
+        <maxX value="12000" />
+        <minY value="-12000" />
+        <maxY value="12000" />
+        <fDampening value="0.5" />
+      </Item>
+    </CalmingQuads>
+  </WaveQuads>
+</WaterData>
