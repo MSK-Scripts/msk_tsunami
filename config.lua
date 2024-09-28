@@ -20,7 +20,7 @@ Config.WaterLevelDropping = 0.05 -- How many Meters the Water is dropping per Re
 
 Config.StayAtMax = 10 -- How long the Water should stay at MaxWaterHeight // in minutes
 Config.RefreshTime = 100 -- Changes on how fast the water is rising or dropping. If number is lower it is faster but lower performance
-
+----------------------------------------------------
 Config.Notification = function(source, message, typ)
     if IsDuplicityVersion() then -- serverside
         exports.msk_core:Notification(source, 'Tsunami', message, typ, 5000)
@@ -33,9 +33,29 @@ end
 Config.TsunamiAlert = function(source, message)
     Wait(10000) -- Wait 10 seconds before starting the alert
 
-    exports.yseries:CellBroadcast(source, 'Tsunami Alert', message)
+    -- exports.yseries:CellBroadcast(source, 'Tsunami Alert', message)
+end
+----------------------------------------------------
+-- This functions are configured for cd_easytime
+Config.GetCurrentWeather = function()
+    return exports['cd_easytime']:GetWeather()
 end
 
+Config.ChangeWeather = function(weatherState, blackoutState)
+    local weather = exports['cd_easytime']:GetWeather()
+
+    if weatherState then
+        weather.weather = weatherState[1]
+        weather.dynamic = weatherState[2]
+    end
+
+    if blackoutState then
+        weather.blackout = blackoutState[1]
+    end
+
+    TriggerEvent('cd_easytime:ForceUpdate', weather)
+end
+----------------------------------------------------
 Translation = {
     ['de'] = {
         ['no_permission'] = 'Du hast keine Berechtigung diesen Befehl auszuführen!',

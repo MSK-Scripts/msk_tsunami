@@ -17,6 +17,15 @@
       <NoStencil value="false" /> <!-- Default: <NoStencil value="false" /> -->
     </Item>
   </WaterQuads>
+  <CalmingQuads>
+    <Item>
+      <minX value="-12000" />
+      <maxX value="12000" />
+      <minY value="-12000" />
+      <maxY value="12000" />
+      <fDampening value="0.5" />
+    </Item>
+  </CalmingQuads>
   <WaveQuads>
     <Item>
       <minX value="-12000" />
@@ -27,14 +36,5 @@
       <XDirection value="0.9" />
       <YDirection value="-0.2" />
     </Item>
-    <CalmingQuads>
-      <Item>
-        <minX value="-12000" />
-        <maxX value="12000" />
-        <minY value="-12000" />
-        <maxY value="12000" />
-        <fDampening value="0.5" />
-      </Item>
-    </CalmingQuads>
   </WaveQuads>
 </WaterData>

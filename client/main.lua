@@ -167,7 +167,7 @@ CreateThread(function()
             local playerPed = PlayerPedId()            
             local playerCoords = GetEntityCoords(playerPed)
             local waterQuadIndex = GetWaterQuadAtCoords_3d(playerCoords.x, playerCoords.y, playerCoords.z)
-            local waterHeight = GetWaterHeight(playerCoords.x, playerCoords.y, playerCoords.z)
+            local _, waterHeight = GetWaterHeight(playerCoords.x, playerCoords.y, playerCoords.z)
 
             if waterQuadIndex ~= -1 then
                 if IsPedInAnyVehicle(playerPed, false) and not IsPedInAnyBoat(playerPed) and not IsPedInAnySub(playerPed) then

@@ -1,6 +1,7 @@
 local CurrentWaterLevel = 0.0
 local IsWaterLevelRising, IsWaterLevelDropping, IsWaterLevelStaying = false, false, false
 local IsWaterLevelModified = false
+local CurrentWeather = nil
 
 if Config.WaterLevelMax > 250.0 then
     Config.WaterLevelMax = 250.0
@@ -37,6 +38,9 @@ StartWaterLevelRising = function(maxWaterLevel)
     IsWaterLevelModified = true
     IsWaterLevelStaying = false
     IsWaterLevelRising = true
+
+    CurrentWeather = Config.GetCurrentWeather()
+    Config.ChangeWeather({'thunder', false}, false)
     TriggerClientEvent('msk_tsunami:startWaterLevelRising', -1, CurrentWaterLevel)
     
     CreateThread(function()
@@ -97,6 +101,27 @@ StopWaterLevelDropping = function()
 end
 exports('StopWaterLevelDropping', StopWaterLevelDropping)
 
+SetWaterLevel = function(waterLevel)
+    waterLevel = Round(waterLevel, 1)
+
+    IsWaterLevelModified = true
+    IsWaterLevelStaying = true
+
+    CurrentWeather = Config.GetCurrentWeather()
+    Config.ChangeWeather({'thunder', false}, false)
+
+    if waterLevel > 24.0 then
+        Config.ChangeWeather(false, {true})
+    end
+
+    if waterLevel < 24.0 then
+        Config.ChangeWeather(false, {false})
+    end
+
+    UpdateWaterLevel(waterLevel)
+end
+exports('SetWaterLevel', SetWaterLevel)
+
 ResetWaterLevel = function()
     if IsWaterLevelRising then 
         StopWaterLevelRising() 
@@ -110,6 +135,8 @@ ResetWaterLevel = function()
     IsWaterLevelRising = false
     IsWaterLevelDropping = false
 
+    Config.ChangeWeather({CurrentWeather.weather, CurrentWeather.dynamic}, {false})
+
     TriggerClientEvent('msk_tsunami:resetWaterLevel', -1)
 end
 exports('ResetWaterLevel', ResetWaterLevel)
@@ -118,17 +145,29 @@ UpdateWaterLevel = function(waterLevel)
     if not IsWaterLevelModified then return end
     CurrentWaterLevel = waterLevel
 
-    if IsWaterLevelRising and CurrentWaterLevel >= Config.WaterLevelMax then 
-        CurrentWaterLevel = Config.WaterLevelMax
-        TriggerClientEvent('msk_tsunami:updateWaterLevel', -1, CurrentWaterLevel)
-        StopWaterLevelRising()
-        return 
+    if IsWaterLevelRising then 
+        if CurrentWaterLevel >= Config.WaterLevelMax then 
+            CurrentWaterLevel = Config.WaterLevelMax
+            TriggerClientEvent('msk_tsunami:updateWaterLevel', -1, CurrentWaterLevel)
+            StopWaterLevelRising()
+            return 
+        end
+
+        if CurrentWaterLevel > 24.0 then
+            Config.ChangeWeather(false, {true})
+        end
     end
 
-    if IsWaterLevelDropping and CurrentWaterLevel <= 0.0 then
-        CurrentWaterLevel = 0.0
-        ResetWaterLevel()
-        return
+    if IsWaterLevelDropping then
+        if CurrentWaterLevel <= 0.0 then
+            CurrentWaterLevel = 0.0
+            ResetWaterLevel()
+            return
+        end
+
+        if CurrentWaterLevel < 24.0 then
+            Config.ChangeWeather(false, {false})
+        end
     end
 
     TriggerClientEvent('msk_tsunami:updateWaterLevel', -1, CurrentWaterLevel, IsWaterLevelStaying)
@@ -180,15 +219,12 @@ RegisterCommand(Config.Commands.setWaterLevel, function(source, args, rawCommand
     local src = source
     local waterLevel = args[1]
     if not waterLevel then return end
-    waterLevel = Round(waterLevel, 1)
 
     if src and src > 0 and not isPlayerAllowed(src, Config.Commands.setWaterLevel) then 
         return Config.Notification(src, Translation[Config.Locale]['no_permission'], 'error')
     end
 
-    IsWaterLevelModified = true
-    IsWaterLevelStaying = true
-    UpdateWaterLevel(waterLevel)
+    SetWaterLevel(waterLevel)
 end)
 
 AddEventHandler('playerJoining', function(playerId)
