@@ -9,6 +9,9 @@ Water level rises, remains for a few minutes and then drops again automatically.
 * Only Players with ace_permissions can use the Commands
 * You don't fall to the bottom when you swim to the surface
 
+## Requirements
+* [cd_easytime](https://github.com/Musiker15/cd_easytime)
+
 ## Known Issue
 Unfortunately, I don't know how to fix the error in the following pictures. If anyone knows, please create a pull request or let us know in the Discord.
 
