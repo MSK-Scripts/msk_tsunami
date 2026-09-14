@@ -23,9 +23,9 @@ Config.RefreshTime = 100 -- Changes on how fast the water is rising or dropping.
 ----------------------------------------------------
 Config.Notification = function(source, message, typ)
     if IsDuplicityVersion() then -- serverside
-        exports.msk_core:Notification(source, 'Tsunami', message, typ, 5000)
+        exports.msk_core:Notification(source, { title = 'Tsunami', message = message, type = typ, duration = 5000 })
     else -- clientside
-        exports.msk_core:Notification('Tsunami', message, typ, 5000)
+        exports.msk_core:Notification({ title = 'Tsunami', message = message, type = typ, duration = 5000 })
     end
 end
 
